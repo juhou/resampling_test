@@ -1,0 +1,41 @@
+Thu Aug  5 07:12:29 2021 Fold 0, Epoch 1, lr: 0.0000040, train loss: 8585.83301, valid loss: 7798.85449
+Thu Aug  5 07:12:54 2021 Fold 0, Epoch 2, lr: 0.0000400, train loss: 9173.14355, valid loss: 7422.17480
+Thu Aug  5 07:13:20 2021 Fold 0, Epoch 3, lr: 0.0000400, train loss: 8141.41699, valid loss: 7967.59961
+Thu Aug  5 07:13:45 2021 Fold 0, Epoch 4, lr: 0.0000400, train loss: 7579.68457, valid loss: 9231.60156
+Thu Aug  5 07:14:11 2021 Fold 0, Epoch 5, lr: 0.0000400, train loss: 8010.75488, valid loss: 10586.06543
+Thu Aug  5 07:14:36 2021 Fold 0, Epoch 6, lr: 0.0000400, train loss: 7078.12207, valid loss: 9192.82129
+Thu Aug  5 07:15:02 2021 Fold 0, Epoch 7, lr: 0.0000400, train loss: 7549.35400, valid loss: 7782.78174
+Thu Aug  5 07:15:27 2021 Fold 0, Epoch 8, lr: 0.0000400, train loss: 7187.23047, valid loss: 5713.40674
+Thu Aug  5 07:26:38 2021 Fold 0, Epoch 1, lr: 0.0000040, train loss: 8612.85156, valid r loss: 0.00110, valid s loss: 15796.54102
+Thu Aug  5 07:27:39 2021 Fold 0, Epoch 2, lr: 0.0000400, train loss: 7508.69922, valid r loss: 0.00000, valid s loss: 15113.06445
+Thu Aug  5 07:28:41 2021 Fold 0, Epoch 3, lr: 0.0000400, train loss: 7398.54004, valid r loss: 0.00000, valid s loss: 13749.88965
+Thu Aug  5 07:29:43 2021 Fold 0, Epoch 4, lr: 0.0000400, train loss: 7319.62549, valid r loss: 0.00000, valid s loss: 16659.75391
+Thu Aug  5 07:30:44 2021 Fold 0, Epoch 5, lr: 0.0000400, train loss: 7205.50830, valid r loss: 0.00000, valid s loss: 16044.45703
+Thu Aug  5 07:31:46 2021 Fold 0, Epoch 6, lr: 0.0000400, train loss: 7321.08398, valid r loss: 0.00000, valid s loss: 13017.44824
+Thu Aug  5 07:32:51 2021 Fold 0, Epoch 7, lr: 0.0000400, train loss: 7389.30469, valid r loss: 0.00000, valid s loss: 15139.01074
+Thu Aug  5 07:33:54 2021 Fold 0, Epoch 8, lr: 0.0000400, train loss: 6614.29590, valid r loss: 0.00000, valid s loss: 13876.53125
+Thu Aug  5 09:15:07 2021 Fold 0, Epoch 1, lr: 0.0000040, train loss: 8410.22070, valid r loss: 0.19977, valid s loss: 16751.93945
+Thu Aug  5 09:16:24 2021 Fold 0, Epoch 2, lr: 0.0000400, train loss: 3825.27734, valid r loss: 0.00681, valid s loss: 3446.53809
+Thu Aug  5 09:17:41 2021 Fold 0, Epoch 3, lr: 0.0000400, train loss: 2279.31030, valid r loss: 0.02096, valid s loss: 2475.05249
+Thu Aug  5 09:18:57 2021 Fold 0, Epoch 4, lr: 0.0000400, train loss: 1874.15503, valid r loss: 0.04134, valid s loss: 2435.94067
+Thu Aug  5 09:20:14 2021 Fold 0, Epoch 5, lr: 0.0000400, train loss: 1759.97681, valid r loss: 0.18884, valid s loss: 2153.89038
+Thu Aug  5 09:21:30 2021 Fold 0, Epoch 6, lr: 0.0000400, train loss: 1545.69995, valid r loss: 0.79001, valid s loss: 1443.90955
+Thu Aug  5 09:22:47 2021 Fold 0, Epoch 7, lr: 0.0000400, train loss: 1322.43030, valid r loss: 0.13015, valid s loss: 2123.25903
+Thu Aug  5 09:24:04 2021 Fold 0, Epoch 8, lr: 0.0000400, train loss: 1271.71094, valid r loss: 0.10867, valid s loss: 1916.14417
+Thu Aug  5 09:25:20 2021 Fold 0, Epoch 9, lr: 0.0000400, train loss: 1229.56580, valid r loss: 0.28444, valid s loss: 2115.64722
+Thu Aug  5 09:26:37 2021 Fold 0, Epoch 10, lr: 0.0000400, train loss: 1152.56982, valid r loss: 0.15647, valid s loss: 1599.71826
+Thu Aug  5 09:27:54 2021 Fold 0, Epoch 11, lr: 0.0000400, train loss: 1205.87415, valid r loss: 0.17869, valid s loss: 1996.56885
+Thu Aug  5 09:29:11 2021 Fold 0, Epoch 12, lr: 0.0000400, train loss: 1131.01855, valid r loss: 0.19554, valid s loss: 1825.62341
+Thu Aug  5 09:30:28 2021 Fold 0, Epoch 13, lr: 0.0000400, train loss: 1095.99280, valid r loss: 0.14519, valid s loss: 1508.41968
+Thu Aug  5 09:31:44 2021 Fold 0, Epoch 14, lr: 0.0000399, train loss: 1168.24817, valid r loss: 0.18055, valid s loss: 1952.37659
+Thu Aug  5 09:33:01 2021 Fold 0, Epoch 15, lr: 0.0000399, train loss: 1129.27405, valid r loss: 0.15263, valid s loss: 1882.71802
+Thu Aug  5 09:34:18 2021 Fold 0, Epoch 16, lr: 0.0000399, train loss: 1048.50439, valid r loss: 0.16443, valid s loss: 1741.53687
+Thu Aug  5 09:35:35 2021 Fold 0, Epoch 17, lr: 0.0000399, train loss: 1059.07385, valid r loss: 0.20591, valid s loss: 1822.04675
+Thu Aug  5 09:36:51 2021 Fold 0, Epoch 18, lr: 0.0000399, train loss: 1069.55164, valid r loss: 0.10130, valid s loss: 1431.40662
+Thu Aug  5 09:38:08 2021 Fold 0, Epoch 19, lr: 0.0000399, train loss: 1015.89557, valid r loss: 0.05812, valid s loss: 1673.26294
+Thu Aug  5 09:39:25 2021 Fold 0, Epoch 20, lr: 0.0000399, train loss: 981.71777, valid r loss: 0.06610, valid s loss: 1397.61890
+Thu Aug  5 09:40:42 2021 Fold 0, Epoch 21, lr: 0.0000399, train loss: 1005.89465, valid r loss: 0.08475, valid s loss: 1313.70020
+Thu Aug  5 09:41:59 2021 Fold 0, Epoch 22, lr: 0.0000398, train loss: 946.60211, valid r loss: 0.06817, valid s loss: 1239.14819
+Thu Aug  5 09:43:16 2021 Fold 0, Epoch 23, lr: 0.0000398, train loss: 929.97485, valid r loss: 0.14118, valid s loss: 1583.79834
+Thu Aug  5 09:44:33 2021 Fold 0, Epoch 24, lr: 0.0000398, train loss: 962.19263, valid r loss: 0.08089, valid s loss: 1142.23511
+Thu Aug  5 09:45:51 2021 Fold 0, Epoch 25, lr: 0.0000398, train loss: 824.20270, valid r loss: 0.05242, valid s loss: 1482.39441

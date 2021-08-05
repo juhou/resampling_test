@@ -1,0 +1,18 @@
+# git에서 무시할 디렉토리
+weights/
+data/
+
+# git에서 무시할 파일
+*.rar
+*.pth
+#ignore.txt
+#ignore-file*
+
+# pycharm 생성폴더
+.idea/
+__pycache__
+
+# git에서 파일 제거 (드라이브에서는 살리기)
+# git rm --dry-run *.pth
+# git rm --cached *.pth
+
