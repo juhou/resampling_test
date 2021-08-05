@@ -1,28 +1,21 @@
-# MMC image classification base-kernel
-
-MMC 연구실의 image classification 연구실험을 위한 base-kernel. 
+# Image resampling detection and estimation을 위한 baseline
 
 
 ## SOFTWARE 
 
+Pytorch 1.8 이상 (*fft module)
 
-Python 3.6.9 ~ 3.7.9
-
-CUDA Version 10.2.89
-
-cuddn 7.6.5
+CUDA Version 11.1
 
 (`requirements.txt`안의 python package 상세 참조)
 
-1. Nvidia 드라이버, CUDA toolkit 10.2, Anaconda 설치
+1. Nvidia 드라이버, CUDA toolkit 11.1, Anaconda 설치
 
 2. pytorch 설치
 
-        conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
-
 3. 각종 필요 패키지 설치
 
-        pip install opencv-contrib-python kaggle resnest geffnet albumentations pillow scikit-learn scikit-image pandas tqdm pretrainedmodels
+        pip install opencv-contrib-python albumentations pillow scikit-learn scikit-image pandas tqdm 
 
 4. apex 설치
 
@@ -40,18 +33,16 @@ cuddn 7.6.5
 
 아래는 Database의 샘플 구조이며, 접미사 ext는 외부데이터 (크롤링 혹은 생성한)를 뜻한다. 
 
+IMD2020_prnu 데이터셋의 canon-powershot-a495 이미지 100장을 이용함
+
+
 
 ```
-./data/database01/test/{im1.jpg, im2.jpg, ... ,imn.jpg}
-./data/database01/train/{im1.jpg, im2.jpg, ... ,imn.jpg}
-./data/database01/test.csv
-./data/database01/train.csv
+./data/images/test/{im1.jpg, im2.jpg, ... ,imn.jpg}
+./data/images/train/{im1.jpg, im2.jpg, ... ,imn.jpg}
+./data/images/test.csv
+./data/images/train.csv
 
-./data/database_ext01/train/{im1.jpg, im2.jpg, ... ,imn.jpg}
-./data/database_ext01/train.csv
-
-./data/database_ext02/train/{im1.jpg, im2.jpg, ... ,imn.jpg}
-./data/database_ext02/train.csv
 ```
 
 아래는 샘플 csv 구조
@@ -75,13 +66,11 @@ cuddn 7.6.5
 ## Training
 
 
-SIIM-ISIC Melanoma Classification 커널 구조를 기반으로 작성하였다. https://www.kaggle.com/c/siim-isic-melanoma-classification/discussion/175412
-
-
 
 Terminal을 이용하는 경우 경로 설정 후 아래 코드를 직접 실행
 
-        python train.py --kernel-type 5fold_b3_30ep --data-folder original_stone/ --enet-type tf_efficientnet_b3_ns --n-epochs 30
+        python train.py --kernel-type test20210805 --out-dim 2 --data-folder images/ --enet-type MISLnet --n-epochs 50 --batch-size 8 --k-fold 4 --image-size 1024 --CUDA_VISIBLE_DEVICES 0
+        python predict.py --kernel-type test20210805 --out-dim 2 --data-folder images/ --enet-type MISLnet --n-epochs 50 --batch-size 8 --k-fold 4 --image-size 1024 --CUDA_VISIBLE_DEVICES 0
 
 pycharm의 경우: 
 
@@ -90,54 +79,11 @@ pycharm의 경우:
         -> train.py 가 선택되었는지 확인 
         -> parameters 이동 후 아래를 입력 
 
-        --kernel-type 5fold_b3_256_30ep --data-folder original_stone/ --enet-type tf_efficientnet_b7_ns --n-epochs 30
+        --kernel-type test20210805 --out-dim 2 --data-folder images/ --enet-type MISLnet --n-epochs 50 --batch-size 8 --k-fold 4 --image-size 1024 --CUDA_VISIBLE_DEVICES 0
 
         -> 적용하기 후 실행/디버깅
 
 
-아래는 18개 모델에 대한 샘플예제 command이다. 
-
-학습이 진행되면서 폴더 `./weights/` 에, best, final weight가 저장된다. 학습 로그는 `./logs/` 폴더에 저장된다. 
-
-아래는 타 대회의 우승팀이 조합한 18개 모델에 대한 학습 스크립트이다. (https://www.kaggle.com/boliu0/melanoma-winning-models)
-
-```
-python train.py --kernel-type 9c_meta_b3_768_512_ext_18ep --data-dir ./data/ --data-folder 768 --image-size 512 --enet-type efficientnet_b3  --n-epochs 18 --use-amp --CUDA_VISIBLE_DEVICES 0,1
-
-python train.py --kernel-type 9c_b4ns_2e_896_ext_15ep --data-dir ./data/ --data-folder 1024 --image-size 896 --enet-type tf_efficientnet_b4_ns --use-amp --init-lr 2e-5 --CUDA_VISIBLE_DEVICES 0,1,2,3,4,5
-
-python train.py --kernel-type 9c_b4ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b4_ns --use-amp --CUDA_VISIBLE_DEVICES 0
-
-python train.py --kernel-type 9c_b4ns_768_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1,2
-
-python train.py --kernel-type 9c_b4ns_768_768_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 768 --enet-type tf_efficientnet_b4_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1,2
-
-python train.py --kernel-type 9c_meta_b4ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns  --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3
-
-python train.py --kernel-type 4c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns --out-dim 4 --init-lr 1.5e-5 --use-amp --CUDA_VISIBLE_DEVICES 0,1,2
-
-python train.py --kernel-type 9c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns --init-lr 1.5e-5 --use-amp --CUDA_VISIBLE_DEVICES 0,1,2
-
-python train.py --kernel-type 9c_b5ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b5_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1
-
-python train.py --kernel-type 9c_meta128_32_b5ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b5_ns  --n-meta-dim 128,32 --use-amp --CUDA_VISIBLE_DEVICES 0
-
-python train.py --kernel-type 9c_b6ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b6_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1
-
-python train.py --kernel-type 9c_b6ns_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b6_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3
-
-python train.py --kernel-type 9c_b6ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b6_ns --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3
-
-python train.py --kernel-type 9c_b7ns_1e_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b7_ns --init-lr 1e-5 --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3
-
-python train.py --kernel-type 9c_b7ns_1e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b7_ns --init-lr 1e-5 --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3,4,5,6,7
-
-python train.py --kernel-type 9c_meta_1.5e-5_b7ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b7_ns  --use-amp --CUDA_VISIBLE_DEVICES 0,1,2
-
-python train.py --kernel-type 9c_nest101_2e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type resnest101 --init-lr 2e-5 --use-amp --CUDA_VISIBLE_DEVICES 0,1,2,3
-
-python train.py --kernel-type 9c_se_x101_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type seresnext101 --use-amp --CUDA_VISIBLE_DEVICES 0,1
-```
 
 ## (Optional) Evaluating
 
@@ -145,43 +91,6 @@ python train.py --kernel-type 9c_se_x101_640_ext_15ep --data-dir ./data/ --data-
 
 평가 결과는 `./logs/`에 저장되며, 전체 합쳐진 결과 (Out-of-folds)는  `./oofs/` 폴더에 저장된다. 
 
-```
-python evaluate.py --kernel-type 9c_meta_b3_768_512_ext_18ep --data-dir ./data/ --data-folder 768 --image-size 512 --enet-type efficientnet_b3 
-
-python evaluate.py --kernel-type 9c_b4ns_2e_896_ext_15ep --data-dir ./data/ --data-folder 1024 --image-size 896 --enet-type tf_efficientnet_b4_ns
-
-python evaluate.py --kernel-type 9c_b4ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b4_ns
-
-python evaluate.py --kernel-type 9c_b4ns_768_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns
-
-python evaluate.py --kernel-type 9c_b4ns_768_768_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 768 --enet-type tf_efficientnet_b4_ns
-
-python evaluate.py --kernel-type 9c_meta_b4ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns 
-
-python evaluate.py --kernel-type 4c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns --out-dim 4
-
-python evaluate.py --kernel-type 9c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns
-
-python evaluate.py --kernel-type 9c_b5ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b5_ns
-
-python evaluate.py --kernel-type 9c_meta128_32_b5ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b5_ns  --n-meta-dim 128,32
-
-python evaluate.py --kernel-type 9c_b6ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b6_ns
-
-python evaluate.py --kernel-type 9c_b6ns_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b6_ns
-
-python evaluate.py --kernel-type 9c_b6ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b6_ns
-
-python evaluate.py --kernel-type 9c_b7ns_1e_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b7_ns
-
-python evaluate.py --kernel-type 9c_b7ns_1e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b7_ns
-
-python evaluate.py --kernel-type 9c_meta_1.5e-5_b7ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b7_ns 
-
-python evaluate.py --kernel-type 9c_nest101_2e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type resnest101
-
-python evaluate.py --kernel-type 9c_se_x101_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type seresnext101
-```
 
 ## Predicting
 
@@ -189,43 +98,6 @@ Test 데이터에 따른 예측을 실시한다.
 
 각 모델의 평가 결과는 아래 `./subs/` 폴더에 저장된다. 
 
-```
-python predict.py --kernel-type 9c_meta_b3_768_512_ext_18ep --data-dir ./data/ --data-folder 768 --image-size 512 --enet-type efficientnet_b3 
-
-python predict.py --kernel-type 9c_b4ns_2e_896_ext_15ep --data-dir ./data/ --data-folder 1024 --image-size 896 --enet-type tf_efficientnet_b4_ns
-
-python predict.py --kernel-type 9c_b4ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b4_ns
-
-python predict.py --kernel-type 9c_b4ns_768_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns
-
-python predict.py --kernel-type 9c_b4ns_768_768_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 768 --enet-type tf_efficientnet_b4_ns
-
-python predict.py --kernel-type 9c_meta_b4ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b4_ns 
-
-python predict.py --kernel-type 4c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns --out-dim 4
-
-python predict.py --kernel-type 9c_b5ns_1.5e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b5_ns
-
-python predict.py --kernel-type 9c_b5ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b5_ns
-
-python predict.py --kernel-type 9c_meta128_32_b5ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b5_ns  --n-meta-dim 128,32
-
-python predict.py --kernel-type 9c_b6ns_448_ext_15ep-newfold --data-dir ./data/ --data-folder 512 --image-size 448 --enet-type tf_efficientnet_b6_ns
-
-python predict.py --kernel-type 9c_b6ns_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b6_ns
-
-python predict.py --kernel-type 9c_b6ns_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b6_ns
-
-python predict.py --kernel-type 9c_b7ns_1e_576_ext_15ep_oldfold --data-dir ./data/ --data-folder 768 --image-size 576 --enet-type tf_efficientnet_b7_ns
-
-python predict.py --kernel-type 9c_b7ns_1e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type tf_efficientnet_b7_ns
-
-python predict.py --kernel-type 9c_meta_1.5e-5_b7ns_384_ext_15ep --data-dir ./data/ --data-folder 512 --image-size 384 --enet-type tf_efficientnet_b7_ns 
-
-python predict.py --kernel-type 9c_nest101_2e_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type resnest101
-
-python predict.py --kernel-type 9c_se_x101_640_ext_15ep --data-dir ./data/ --data-folder 768 --image-size 640 --enet-type seresnext101
-```
 
 ## Ensembling (앙상블)
 

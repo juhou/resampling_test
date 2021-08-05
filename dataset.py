@@ -41,11 +41,6 @@ def get_dataframe(k_fold, data_dir, data_folder, out_dim = 1):
     df_test = pd.read_csv(os.path.join(data_dir, data_folder, 'test.csv'))
     df_test['filepath'] = df_test['image_name'].apply(lambda x: os.path.join(data_dir, f'{data_folder}test', x)) # f'{x}.jpg'
 
-    # 쓰지 않는 변수
-    meta_features = None
-    n_meta_features = 0
-    target_idx = 1
-
     return df_train, df_test
 
 

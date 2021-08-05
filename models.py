@@ -1,40 +1,6 @@
-import torch, torch.nn as nn, torch.nn.functional as F, random
+import torch, torch.nn as nn, torch.nn.functional as F
 import torch.fft as fft
 import cv2
-
-#
-# class ModelBase(nn.Module):
-#     def __init__(self, name):
-#         super(ModelBase, self).__init__()
-#         self.name = name
-#
-#     def copy_params(self, state_dict):
-#         own_state = self.state_dict()
-#         for (name, param) in state_dict.items():
-#             if name in own_state:
-#                 own_state[name].copy_(param.clone())
-#
-#     def boost_params(self, scale=1.0):
-#         if scale == 1.0:
-#             return self.state_dict()
-#         for (name, param) in self.state_dict().items():
-#             self.state_dict()[name].copy_((scale * param).clone())
-#         return self.state_dict()
-#
-#     # self - x
-#     def sub_params(self, x):
-#         own_state = self.state_dict()
-#         for (name, param) in x.items():
-#             if name in own_state:
-#                 own_state[name].copy_(own_state[name] - param)
-#
-#     # self + x
-#     def add_params(self, x):
-#         a = self.state_dict()
-#         for (name, param) in x.items():
-#             if name in a:
-#                 a[name].copy_(a[name] + param)
-
 
 
 
@@ -42,7 +8,7 @@ import cv2
 
 class MISLnet(nn.Module):
 
-    def __init__(self, enet_type, out_dim, pretrained = False):
+    def __init__(self, backbone_type, im_size=1024, out_dim=2, pretrained = False):
         super(MISLnet, self).__init__()
 
         self.register_parameter("const_weight", None)
@@ -94,13 +60,9 @@ class MISLnet(nn.Module):
 
 
 
-
-
-
-
 class JUNet(nn.Module):
 
-    def __init__(self, enet_type, im_size, out_dim=2, pretrained = False):
+    def __init__(self, backbone_type, im_size, out_dim=2, pretrained = False):
         super(JUNet, self).__init__()
 
         self.register_parameter("const_weight", None)
@@ -129,23 +91,25 @@ class JUNet(nn.Module):
 
     def forward(self, x):
         # Constrained-CNN
+        # 이곳의 레이어를 mantranet의 residual 추출 모듈 (pre-trained)로 교체해야함
         self.normalized_F()
         x = F.conv2d(x, self.const_weight)
 
         # CNN - 2d local area feature extractor
+        # 이곳의 레이어 / feature 규모에 대해서 고민 : mantranet을 그대로 차용해도 좋음
         x = self.conv1(x)
         x = torch.relu(x)
         x = self.conv2(x)
         x = torch.relu(x)
 
-        # fft layer
+        # fft layer - Ryu 2011논문에서 착안. 다른 방식을 도입해도 좋음 (e.g. 유사 radon transform)
         fft_row = torch.abs(fft.fft(x, dim=2))
         mean_fft_row = torch.squeeze(torch.mean(fft_row, dim=3))
 
         fft_col = torch.abs(fft.fft(x, dim=3))
         mean_fft_col = torch.squeeze(torch.mean(fft_col, dim=2))
 
-
+        # 열과 행에서 각각 추출한 fft feature를 이용하여 판별
         x_row = self.row_fc1(mean_fft_row)
         x_row = torch.relu(x_row)
         x_row = self.row_fc2(x_row)
@@ -157,6 +121,8 @@ class JUNet(nn.Module):
         x_col = torch.relu(x_col)
 
         # parameter estimator
+        # 위에서 뽑은 특징으로 parameter를 추정하는 부분
+        # 알려진 optimal 공식을 적용해서 수정하는 방향으로 구상
         x = torch.cat((x_row, x_col), dim=1)
         x = self.regressor_fc1(x)
         x = torch.relu(x)
