@@ -48,15 +48,19 @@ IMD2020_prnu 데이터셋의 canon-powershot-a495 이미지 100장을 이용함
 아래는 샘플 csv 구조
 
 ```
-,image_name,target,patient_id,image_number
-3332,51-1.jpg,1,51,1.jpg
-3333,51-2.jpg,1,51,2.jpg
-3334,51-3.jpg,1,51,3.jpg
-3335,51-4.jpg,1,51,4.jpg
-3344,52-1.jpg,1,52,1.jpg
-3345,52-2.jpg,1,52,2.jpg
-3346,52-3.jpg,1,52,3.jpg
-3347,52-4.jpg,1,52,4.jpg
+,image_name,camera_name,img_id
+0,img_001.jpg,canon-powershot-a495,0
+1,img_002.jpg,canon-powershot-a495,1
+2,img_003.jpg,canon-powershot-a495,2
+3,img_004.jpg,canon-powershot-a495,3
+4,img_005.jpg,canon-powershot-a495,4
+5,img_006.jpg,canon-powershot-a495,5
+6,img_007.jpg,canon-powershot-a495,6
+7,img_008.jpg,canon-powershot-a495,7
+8,img_009.jpg,canon-powershot-a495,8
+9,img_010.jpg,canon-powershot-a495,9
+10,img_011.jpg,canon-powershot-a495,10
+
 ...
 
 ```
